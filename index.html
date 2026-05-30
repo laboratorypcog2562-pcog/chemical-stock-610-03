@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบตรวจสอบคลังสารเคมีเรียลไทม์ | คณะเภสัชศาสตร์ ห้อง 610-03</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Sarabun', sans-serif; }
     </style>
@@ -15,7 +15,7 @@
     <header class="bg-gradient-to-r from-teal-800 via-emerald-700 to-teal-800 text-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
             <div class="flex items-center gap-4">
-                <span class="text-3xl bg-white/10 p-2 rounded-xl backdrop-blur-sm">⚕️</span>
+                <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDJGUWf-MUfyvS_83bXIWhc9vSbo8kSSnbvwkPYUqmhXQhRcGg6M5Mqty_NRsMWGKmZlewdJMBsos6VmWAF9syC_Ls63eo5BeEOLZx7ypn5J9H8aUWErc3vaKLbQfWEOUniHOFVZI4l6lIOAd7kETPPNHkONF35=w16383" alt="Branch Logo" class="h-14 w-14 object-contain bg-white p-1.5 rounded-xl shadow-xs">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">Chemical Inventory Viewer</h1>
                     <p class="text-xs text-emerald-100 font-light mt-0.5">ระบบตรวจสอบยอดสารเคมีคงเหลือ • ห้องปฏิบัติการ 610-03 คณะเภสัชศาสตร์</p>
@@ -23,7 +23,7 @@
             </div>
             <div class="bg-emerald-900/50 px-4 py-1.5 rounded-full border border-emerald-500/30 text-xs font-medium flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                ระบบฐานข้อมูลเรียลไทม์ (Read-Only)
+                ระบบตรวจสอบข้อมูลแบบอ่านอย่างเดียว (Read-Only)
             </div>
         </div>
     </header>
@@ -33,21 +33,21 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">สารเคมีทั้งหมดในคลัง</p>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">สารเคมีทั้งหมดในคลังห้อง 610-03</p>
                     <h3 class="text-2xl font-bold text-slate-800 mt-1" id="cardTotal">--</h3>
                 </div>
                 <span class="text-2xl bg-teal-50 p-3 rounded-xl text-teal-600">📦</span>
             </div>
             <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่พร้อมใช้งาน</p>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่มีพร้อมใช้งาน</p>
                     <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="cardAvailable">--</h3>
                 </div>
                 <span class="text-2xl bg-emerald-50 p-3 rounded-xl text-emerald-600">✅</span>
             </div>
             <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่หมดคลัง (Out of Stock)</p>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่ยอดหมดคลัง</p>
                     <h3 class="text-2xl font-bold text-rose-600 mt-1" id="cardEmpty">--</h3>
                 </div>
                 <span class="text-2xl bg-rose-50 p-3 rounded-xl text-rose-600">🚨</span>
@@ -57,9 +57,9 @@
         <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 mb-6">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">🔍 ช่องค้นหาสารเคมีอัจฉริยะแบบ Real-time</label>
             <div class="relative w-full">
-                <input type="text" id="searchInput" oninput="searchStock()" placeholder="พิมพ์สืบค้นได้ทันที เช่น: ชื่อสารเคมี (Ethanol) / รหัสรหัสตู้ (AP-01) / ตัวเลข CAS No. (64-17-5) ..." class="w-full pl-4 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 focus:outline-none transition-all duration-150 text-sm placeholder:text-slate-400 shadow-inner bg-slate-50/50">
+                <input type="text" id="searchInput" oninput="searchStock()" placeholder="ระบุคีย์เพื่อค้นหา เช่น: ชื่อสารเคมี (เช่น Ethanol) / รหัสรหัสตู้สารเคมี / เลข CAS No. ยา..." class="w-full pl-4 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 focus:outline-none transition-all duration-150 text-sm placeholder:text-slate-400 shadow-inner bg-slate-50/50">
             </div>
-            <div class="text-xs text-slate-400 font-medium mt-2" id="searchResultCount">ระบบกำลังติดต่อคลังข้อมูลหลักเพื่อเตรียมความพร้อม...</div>
+            <div class="text-xs text-slate-400 font-medium mt-2" id="searchResultCount">กำลังทำการเชื่อมประสานโครงข่ายคลังข้อมูลหลัก...</div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-xs border border-slate-200/60 overflow-hidden">
@@ -82,7 +82,7 @@
                         <tr>
                             <td colspan="9" class="p-16 text-center text-slate-400">
                                 <span class="inline-block animate-spin mr-3 text-teal-600 text-xl">⏳</span> 
-                                กำลังตรวจสอบสิทธิ์และเชื่อมโยงข้อมูลสต็อกสารเคมีจากห้องปฏิบัติการ...
+                                กำลังสืบค้นสถานะปัจจุบันของคลังเคมีภัณฑ์ กรุณารอสักครู่...
                             </td>
                         </tr>
                     </tbody>
@@ -97,18 +97,17 @@
     </div>
 
     <script>
-        // ⚠️ วางลิงก์ Web App URL ที่คุณคัดลอกมาจากส่วนที่ 2 ขั้นที่ 3 ข้อ 5 ลงในเครื่องหมายคำพูดด้านล่างนี้ครับ
-        const API_URL = "https://script.google.com/macros/s/AKfycbwZYgKIbNk7GLuOqyb3N9BxB9SXP0MfCtJvxJiuld9zzLGA2428fQ1q-0Ywtnp-mQpjoA/exec"; 
+        // ⚠️ บรรทัดสำคัญ: นำ URL ของเว็บแอปที่ก็อปปี้ไว้จากการ Deploy ล่าสุด (ใน Apps Script) มาวางแทนที่ตรงนี้ครับ
+        const API_URL = "https://script.google.com/macros/s/AKfycbzK5qVamjWSZ_ALNhMy_kJN88yf8DlE22Bpq-Q93nT5i4I4kV-E8etkqpdix1uPUCPoag/exec"; 
 
         let masterStockData = [];
 
-        // ฟังก์ชันดึงค่าสดจาก API ของ Google Sheets
         async function fetchLiveStock() {
             try {
                 const response = await fetch(API_URL);
                 const allData = await response.json();
                 
-                // ระบบจะทำตัวกรองความปลอดภัย เลือกแสดงผลเฉพาะแถวที่อยู่ "ห้อง" 610-03 เท่านั้น
+                // กรองข้อมูลดึงเฉพาะสารที่มีตราคอลัมน์ห้องระบุไว้เป็น "610-03" เพื่อป้องกันสารห้องอื่นปะปน
                 masterStockData = allData.filter(row => row["ห้อง"] && row["ห้อง"].toString().includes("610-03"));
                 
                 updateDashboardCards(masterStockData);
@@ -117,15 +116,15 @@
                 document.getElementById('stockTableBody').innerHTML = `
                     <tr>
                         <td colspan="9" class="p-16 text-center text-rose-500 font-semibold">
-                            ❌ ล้มเหลวในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาตรวจสอบการ Deploy เว็บแอปว่าตั้งสิทธิ์เป็น 'Anyone' แล้วหรือยัง
+                            ❌ ล้มเหลวในการเชื่อมประสาน API คอนเทนต์ กรุณาเช็กการตั้งสิทธิ์ Deploy ในกูเกิ้ลชีทให้เป็น 'Anyone'
                         </td>
                     </tr>`;
             }
         }
 
-        // ฟังก์ชันอัปเดตข้อมูลบนหน้าจอ Dashboard
         function updateDashboardCards(data) {
             const total = data.length;
+            // แมปชื่อตัวแปรให้ตรงกับหัวตารางคอลัมน์ H เป๊ะๆ
             const available = data.filter(item => (Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0) > 0).length;
             const empty = total - available;
 
@@ -134,25 +133,24 @@
             document.getElementById('cardEmpty').innerText = empty + " รายการ";
         }
 
-        // ฟังก์ชันเรนเดอร์ตารางลงสู่องค์ประกอบหน้า HTML
         function renderStockTable(data) {
             const tbody = document.getElementById('stockTableBody');
-            document.getElementById('searchResultCount').innerText = `✨ ผลลัพธ์การสืบค้นสารเคมีภายในคลังห้อง 610-03 ทั้งหมด ${data.length} รายการ`;
+            document.getElementById('searchResultCount').innerText = `✨ ผลลัพธ์จากการพิมพ์กรองค้นพบสารเคมีในระบบทั้งหมด ${data.length} รายการ`;
             tbody.innerHTML = '';
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-12 text-center text-slate-400 font-light">🔍 ไม่พบข้อมูลยาหรือสารเคมีที่ตรงกับคำสืบค้นของคุณในระบบ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="p-12 text-center text-slate-400 font-light">🔍 ไม่พบข้อมูลยาหรือสารเคมีที่ตรงกับคำสืบค้นของคุณในคลังห้อง 610-03</td></tr>`;
                 return;
             }
 
             data.forEach(item => {
-                // อิงชื่อฟิลด์วัตถุตามตัวสะกดจากหัวข้อชีท STOCK ของคุณอย่างสม่ำเสมอ
+                // ดึงค่าคงเหลือจากหัวข้อตารางคอลัมน์ H ตรงตัวอักษรพิมพ์ใหญ่พิมพ์เล็ก
                 const qty = Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0;
                 const statusBadge = qty > 0 
                     ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
                     : `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200/60">สินค้าหมดคลัง</span>`;
 
-                // ฟอร์แมตหน้าตาวันหมดอายุให้อ่านเป็นภาษาไทยสวยงาม
+                // แปลงฟอร์แมตข้อมูลชนิดวันเวลาให้อ่านง่ายเป็นภาษาไทยตามหลักวิชาการ
                 let expDate = item["วันหมดอายุ"] || '-';
                 if(expDate && expDate !== '-') {
                     const dateObj = new Date(expDate);
@@ -176,7 +174,7 @@
             });
         }
 
-        // ระบบตัวกรองการพิมพ์สืบค้นอัจฉริยะ (Real-time Filter) พิมพ์ไปลบไปตัวเลขจะวิ่งขึ้นลงอัตโนมัติ
+        // ระบบเสิร์ชอัจฉริยะ พิมพ์ปุ๊บกรองผลลัพธ์ปั๊บ ขยับตามนิ้วมือของผู้ใช้งานทันที
         function searchStock() {
             const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
             const filteredData = masterStockData.filter(item => {
