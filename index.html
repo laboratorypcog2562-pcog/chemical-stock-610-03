@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบตรวจสอบคลังสารเคมีเรียลไทม์ | คณะเภสัชศาสตร์ ห้อง 610-03</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <header class="bg-gradient-to-r from-teal-800 via-emerald-700 to-teal-800 text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <span class="text-3xl bg-white/10 p-2 rounded-xl backdrop-blur-sm">⚕️</span>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">Chemical Inventory Viewer</h1>
+                    <p class="text-xs text-emerald-100 font-light mt-0.5">ระบบตรวจสอบยอดสารเคมีคงเหลือ • ห้องปฏิบัติการ 610-03 คณะเภสัชศาสตร์</p>
+                </div>
+            </div>
+            <div class="bg-emerald-900/50 px-4 py-1.5 rounded-full border border-emerald-500/30 text-xs font-medium flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                ระบบฐานข้อมูลเรียลไทม์ (Read-Only)
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">สารเคมีทั้งหมดในคลัง</p>
+                    <h3 class="text-2xl font-bold text-slate-800 mt-1" id="cardTotal">--</h3>
+                </div>
+                <span class="text-2xl bg-teal-50 p-3 rounded-xl text-teal-600">📦</span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่พร้อมใช้งาน</p>
+                    <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="cardAvailable">--</h3>
+                </div>
+                <span class="text-2xl bg-emerald-50 p-3 rounded-xl text-emerald-600">✅</span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">รายการที่หมดคลัง (Out of Stock)</p>
+                    <h3 class="text-2xl font-bold text-rose-600 mt-1" id="cardEmpty">--</h3>
+                </div>
+                <span class="text-2xl bg-rose-50 p-3 rounded-xl text-rose-600">🚨</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 mb-6">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">🔍 ช่องค้นหาสารเคมีอัจฉริยะแบบ Real-time</label>
+            <div class="relative w-full">
+                <input type="text" id="searchInput" oninput="searchStock()" placeholder="พิมพ์สืบค้นได้ทันที เช่น: ชื่อสารเคมี (Ethanol) / รหัสรหัสตู้ (AP-01) / ตัวเลข CAS No. (64-17-5) ..." class="w-full pl-4 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 focus:outline-none transition-all duration-150 text-sm placeholder:text-slate-400 shadow-inner bg-slate-50/50">
+            </div>
+            <div class="text-xs text-slate-400 font-medium mt-2" id="searchResultCount">ระบบกำลังติดต่อคลังข้อมูลหลักเพื่อเตรียมความพร้อม...</div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/60 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold text-xs tracking-wider uppercase">
+                            <th class="p-4 pl-6">Code รหัส</th>
+                            <th class="p-4">ชื่อสารเคมี (Chemical Name)</th>
+                            <th class="p-4">CAS No.</th>
+                            <th class="p-4">Grade</th>
+                            <th class="p-4">ขนาดบรรจุ</th>
+                            <th class="p-4">ที่จัดเก็บ (Location)</th>
+                            <th class="p-4 text-right">ปริมาณคงเหลือรวม</th>
+                            <th class="p-4 text-center">วันหมดอายุ</th>
+                            <th class="p-4 text-center">สถานะคลัง</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTableBody" class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
+                        <tr>
+                            <td colspan="9" class="p-16 text-center text-slate-400">
+                                <span class="inline-block animate-spin mr-3 text-teal-600 text-xl">⏳</span> 
+                                กำลังตรวจสอบสิทธิ์และเชื่อมโยงข้อมูลสต็อกสารเคมีจากห้องปฏิบัติการ...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="mt-8 text-center text-xs text-slate-400">
+            © 2026 Faculty of Pharmacy • Real-time Chemical Stock Monitoring System
+        </footer>
+
+    </div>
+
+    <script>
+        // ⚠️ วางลิงก์ Web App URL ที่คุณคัดลอกมาจากส่วนที่ 2 ขั้นที่ 3 ข้อ 5 ลงในเครื่องหมายคำพูดด้านล่างนี้ครับ
+        const API_URL = "https://script.google.com/macros/s/AKfycbwZYgKIbNk7GLuOqyb3N9BxB9SXP0MfCtJvxJiuld9zzLGA2428fQ1q-0Ywtnp-mQpjoA/exec"; 
+
+        let masterStockData = [];
+
+        // ฟังก์ชันดึงค่าสดจาก API ของ Google Sheets
+        async function fetchLiveStock() {
+            try {
+                const response = await fetch(API_URL);
+                const allData = await response.json();
+                
+                // ระบบจะทำตัวกรองความปลอดภัย เลือกแสดงผลเฉพาะแถวที่อยู่ "ห้อง" 610-03 เท่านั้น
+                masterStockData = allData.filter(row => row["ห้อง"] && row["ห้อง"].toString().includes("610-03"));
+                
+                updateDashboardCards(masterStockData);
+                renderStockTable(masterStockData);
+            } catch (error) {
+                document.getElementById('stockTableBody').innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-16 text-center text-rose-500 font-semibold">
+                            ❌ ล้มเหลวในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาตรวจสอบการ Deploy เว็บแอปว่าตั้งสิทธิ์เป็น 'Anyone' แล้วหรือยัง
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        // ฟังก์ชันอัปเดตข้อมูลบนหน้าจอ Dashboard
+        function updateDashboardCards(data) {
+            const total = data.length;
+            const available = data.filter(item => (Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0) > 0).length;
+            const empty = total - available;
+
+            document.getElementById('cardTotal').innerText = total + " รายการ";
+            document.getElementById('cardAvailable').innerText = available + " รายการ";
+            document.getElementById('cardEmpty').innerText = empty + " รายการ";
+        }
+
+        // ฟังก์ชันเรนเดอร์ตารางลงสู่องค์ประกอบหน้า HTML
+        function renderStockTable(data) {
+            const tbody = document.getElementById('stockTableBody');
+            document.getElementById('searchResultCount').innerText = `✨ ผลลัพธ์การสืบค้นสารเคมีภายในคลังห้อง 610-03 ทั้งหมด ${data.length} รายการ`;
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-12 text-center text-slate-400 font-light">🔍 ไม่พบข้อมูลยาหรือสารเคมีที่ตรงกับคำสืบค้นของคุณในระบบ</td></tr>`;
+                return;
+            }
+
+            data.forEach(item => {
+                // อิงชื่อฟิลด์วัตถุตามตัวสะกดจากหัวข้อชีท STOCK ของคุณอย่างสม่ำเสมอ
+                const qty = Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0;
+                const statusBadge = qty > 0 
+                    ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
+                    : `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200/60">สินค้าหมดคลัง</span>`;
+
+                // ฟอร์แมตหน้าตาวันหมดอายุให้อ่านเป็นภาษาไทยสวยงาม
+                let expDate = item["วันหมดอายุ"] || '-';
+                if(expDate && expDate !== '-') {
+                    const dateObj = new Date(expDate);
+                    if(!isNaN(dateObj)) expDate = dateObj.toLocaleDateString('th-TH', {year: 'numeric', month: 'short', day: 'numeric'});
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition duration-150";
+                tr.innerHTML = `
+                    <td class="p-4 pl-6 font-mono font-bold text-teal-700">${item["code"] || '-'}</td>
+                    <td class="p-4 font-semibold text-slate-900 text-sm">${item["ชื่อสารเคมี (Chemical name)"] || '-'}</td>
+                    <td class="p-4 text-slate-500 font-mono text-xs">${item["CAS no."] || '-'}</td>
+                    <td class="p-4 text-xs"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${item["Grade"] || '-'}</span></td>
+                    <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'}</td>
+                    <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี"] || '-'}</td>
+                    <td class="p-4 text-right font-bold ${qty > 0 ? 'text-teal-600' : 'text-slate-400'} text-base">${qty} ${item["Unit"] || ''}</td>
+                    <td class="p-4 text-center text-xs text-slate-500">${expDate}</td>
+                    <td class="p-4 text-center">${statusBadge}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ระบบตัวกรองการพิมพ์สืบค้นอัจฉริยะ (Real-time Filter) พิมพ์ไปลบไปตัวเลขจะวิ่งขึ้นลงอัตโนมัติ
+        function searchStock() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filteredData = masterStockData.filter(item => {
+                const name = (item["ชื่อสารเคมี (Chemical name)"] || '').toLowerCase();
+                const code = (item["code"] || '').toLowerCase();
+                const cas = (item["CAS no."] || '').toLowerCase();
+                return name.includes(keyword) || code.includes(keyword) || cas.includes(keyword);
+            });
+            renderStockTable(filteredData);
+        }
+
+        window.onload = fetchLiveStock;
+    </script>
+</body>
+</html>
