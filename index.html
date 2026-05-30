@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบตรวจสอบคลังสารเคมีเรียลไทม์ | คณะเภสัชศาสตร์ สาขาวิชาเภสัชเวทและเภสัชพฤกษศาสตร์ ห้อง 610-03</title>
+    <title>ระบบตรวจสอบคลังสารเคมีเรียลไทม์ | คณะเภสัชศาสตร์ ห้อง 610-03</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -13,15 +13,15 @@
 <body class="bg-slate-50 text-slate-800 min-h-screen">
 
     <header class="bg-gradient-to-r from-teal-800 via-emerald-700 to-teal-800 text-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="container mx-auto px-6 py-4 flex flex-col lg:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <img src="<a href="https://imgbb.com/"><img src="https://i.ibb.co/DfCLkS6X/logo1.jpg" alt="logo1" border="0"></a>" alt="Branch Logo" class="h-14 w-14 object-contain bg-white p-1.5 rounded-xl shadow-xs">
+                <img src="https://pcog.psu.ac.th/images/banners/logo1.jpg" alt="Faculty Logo" class="h-14 w-auto object-contain bg-white p-1.5 rounded-xl shadow-xs">
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">Chemical Inventory Viewer</h1>
-                    <p class="text-xs text-emerald-100 font-light mt-0.5">ระบบตรวจสอบยอดสารเคมีคงเหลือ • ห้องปฏิบัติการ 610-03 คณะเภสัชศาสตร์</p>
+                    <p class="text-xs text-emerald-100 font-light mt-0.5">ระบบตรวจสอบคลังสารเคมีเรียลไทม์ | คณะเภสัชศาสตร์ สาขาวิชาเภสัชเวทและเภสัชพฤกษศาสตร์ ห้อง 610-03</p>
                 </div>
             </div>
-            <div class="bg-emerald-900/50 px-4 py-1.5 rounded-full border border-emerald-500/30 text-xs font-medium flex items-center gap-2">
+            <div class="bg-emerald-900/50 px-4 py-1.5 rounded-full border border-emerald-500/30 text-xs font-medium flex items-center gap-2 shrink-0">
                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                 ระบบตรวจสอบข้อมูลแบบอ่านอย่างเดียว (Read-Only)
             </div>
@@ -57,7 +57,7 @@
         <div class="bg-white p-5 rounded-2xl shadow-xs border border-slate-200/60 mb-6">
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">🔍 ช่องค้นหาสารเคมีอัจฉริยะแบบ Real-time</label>
             <div class="relative w-full">
-                <input type="text" id="searchInput" oninput="searchStock()" placeholder="ระบุคีย์เพื่อค้นหา เช่น: ชื่อสารเคมี (เช่น Ethanol) / รหัสรหัสตู้สารเคมี / เลข CAS No. ยา..." class="w-full pl-4 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 focus:outline-none transition-all duration-150 text-sm placeholder:text-slate-400 shadow-inner bg-slate-50/50">
+                <input type="text" id="searchInput" oninput="searchStock()" placeholder="ระบุคีย์เพื่อค้นหา เช่น: ชื่อสารเคมี (เช่น Ethanol) / รหัสตู้สารเคมี / เลข CAS No. ยา..." class="w-full pl-4 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-600 focus:border-teal-600 focus:outline-none transition-all duration-150 text-sm placeholder:text-slate-400 shadow-inner bg-slate-50/50">
             </div>
             <div class="text-xs text-slate-400 font-medium mt-2" id="searchResultCount">กำลังทำการเชื่อมประสานโครงข่ายคลังข้อมูลหลัก...</div>
         </div>
@@ -97,7 +97,7 @@
     </div>
 
     <script>
-        // ⚠️ บรรทัดสำคัญ: นำ URL ของเว็บแอปที่ก็อปปี้ไว้จากการ Deploy ล่าสุด (ใน Apps Script) มาวางแทนที่ตรงนี้ครับ
+        // ⚠️ สำคัญมาก: อยาลืมก๊อปปี้ลิงก์ Web App (URL สีส้มยาวๆ จาก Google Sheets) มาวางแทนข้อความนี้แทนนะครับเว็บถึงจะดึงข้อมูลชีทได้
         const API_URL = "https://script.google.com/macros/s/AKfycbzK5qVamjWSZ_ALNhMy_kJN88yf8DlE22Bpq-Q93nT5i4I4kV-E8etkqpdix1uPUCPoag/exec"; 
 
         let masterStockData = [];
@@ -107,7 +107,7 @@
                 const response = await fetch(API_URL);
                 const allData = await response.json();
                 
-                // กรองข้อมูลดึงเฉพาะสารที่มีตราคอลัมน์ห้องระบุไว้เป็น "610-03" เพื่อป้องกันสารห้องอื่นปะปน
+                // กรองดึงเฉพาะข้อมูลห้องปฏิบัติการ 610-03 เท่านั้น
                 masterStockData = allData.filter(row => row["ห้อง"] && row["ห้อง"].toString().includes("610-03"));
                 
                 updateDashboardCards(masterStockData);
@@ -124,7 +124,6 @@
 
         function updateDashboardCards(data) {
             const total = data.length;
-            // แมปชื่อตัวแปรให้ตรงกับหัวตารางคอลัมน์ H เป๊ะๆ
             const available = data.filter(item => (Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0) > 0).length;
             const empty = total - available;
 
@@ -139,18 +138,16 @@
             tbody.innerHTML = '';
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-12 text-center text-slate-400 font-light">🔍 ไม่พบข้อมูลยาหรือสารเคมีที่ตรงกับคำสืบค้นของคุณในคลังห้อง 610-03</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="p-12 text-center text-slate-400 font-light">🔍 ไม่พบข้อมูลสารเคมีที่ตรงกับคำสืบค้นของคุณในคลังห้อง 610-03</td></tr>`;
                 return;
             }
 
             data.forEach(item => {
-                // ดึงค่าคงเหลือจากหัวข้อตารางคอลัมน์ H ตรงตัวอักษรพิมพ์ใหญ่พิมพ์เล็ก
                 const qty = Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0;
                 const statusBadge = qty > 0 
                     ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
                     : `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200/60">สินค้าหมดคลัง</span>`;
 
-                // แปลงฟอร์แมตข้อมูลชนิดวันเวลาให้อ่านง่ายเป็นภาษาไทยตามหลักวิชาการ
                 let expDate = item["วันหมดอายุ"] || '-';
                 if(expDate && expDate !== '-') {
                     const dateObj = new Date(expDate);
@@ -174,7 +171,6 @@
             });
         }
 
-        // ระบบเสิร์ชอัจฉริยะ พิมพ์ปุ๊บกรองผลลัพธ์ปั๊บ ขยับตามนิ้วมือของผู้ใช้งานทันที
         function searchStock() {
             const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
             const filteredData = masterStockData.filter(item => {
