@@ -124,7 +124,7 @@
 
         function updateDashboardCards(data) {
             const total = data.length;
-            const available = data.filter(item => (Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0) > 0).length;
+            const available = data.filter(item => (Number(item["ปริมาณสารเคมีคงเหลือ"]) || 0) > 0).length;
             const empty = total - available;
 
             document.getElementById('cardTotal').innerText = total + " รายการ";
@@ -143,7 +143,7 @@
             }
 
             data.forEach(item => {
-                const qty = Number(item["ปริมาณสารเคมีคงเหลือในขวด (chemical volume/weight)"]) || 0;
+                const qty = Number(item["ปริมาณสารเคมีคงเหลือ"]) || 0;
                 const statusBadge = qty > 0 
                     ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
                     : `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200/60">สินค้าหมดคลัง</span>`;
@@ -162,8 +162,8 @@
                     <td class="p-4 text-slate-500 font-mono text-xs">${item["CAS no."] || '-'}</td>
                     <td class="p-4 text-xs"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${item["Grade"] || '-'}</span></td>
                     <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'}</td>
-                    <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี"] || '-'}</td>
-                    <td class="p-4 text-right font-bold ${qty > 0 ? 'text-teal-600' : 'text-slate-400'} text-base">${qty} ${item["Unit"] || ''}</td>
+                    <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี (location)"] || '-'}</td>
+                    <td class="p-4 text-right font-bold ${qty > 0 ? 'text-teal-600' : 'text-slate-400'} text-base">${qty} ${item["หน่วยปริมาณสารเคมีคงเหลือ"] || ''}</td>
                     <td class="p-4 text-center text-xs text-slate-500">${expDate}</td>
                     <td class="p-4 text-center">${statusBadge}</td>
                 `;
