@@ -161,7 +161,7 @@
                     <td class="p-4 font-semibold text-slate-900 text-sm">${item["ชื่อสารเคมี (Chemical name)"] || '-'}</td>
                     <td class="p-4 text-slate-500 font-mono text-xs">${item["CAS no."] || '-'}</td>
                     <td class="p-4 text-xs"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${item["Grade"] || '-'}</span></td>
-                    <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'}</td>
+                    <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'} ${item["หน่วยขนาดบรรจุของขวด"] || ''}</td>
                     <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี (location)"] || '-'}</td>
                     <td class="p-4 text-right font-bold ${qty > 0 ? 'text-teal-600' : 'text-slate-400'} text-base">${qty} ${item["หน่วยปริมาณสารเคมีคงเหลือ"] || ''}</td>
                     <td class="p-4 text-center text-xs text-slate-500">${expDate}</td>
