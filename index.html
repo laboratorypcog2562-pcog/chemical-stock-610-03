@@ -70,6 +70,7 @@
                             <th class="p-4 pl-6">Code รหัส</th>
                             <th class="p-4">ชื่อสารเคมี (Chemical Name)</th>
                             <th class="p-4">CAS No.</th>
+                            <th class="p-4">GHS</th>
                             <th class="p-4">Grade</th>
                             <th class="p-4">ขนาดบรรจุ</th>
                             <th class="p-4">ที่จัดเก็บ (Location)</th>
@@ -146,15 +147,19 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
 
             data.forEach(item => {
                 const qty = Number(item["ปริมาณสารเคมีคงเหลือ"]) || 0;
-                const statusBadge = qty > 0 
+
+                const statusBadge = qty > 0
                     ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
                     : `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200/60">สินค้าหมดคลัง</span>`;
 
-                let expDate = item["วันหมดอายุ"] || '-';
-                if(expDate && expDate !== '-') {
-                    const dateObj = new Date(expDate);
-                    if(!isNaN(dateObj)) expDate = dateObj.toLocaleDateString('th-TH', {year: 'numeric', month: 'short', day: 'numeric'});
-                }
+                // ===== GHS Color =====
+                    const ghs = item["ประเภทความเป็นอันตราย (GHS)"] || "-";
+
+                let ghsColor = "bg-slate-100 text-slate-700";
+
+                if (ghs.includes("กัดกร่อน")) {ghsColor = "bg-red-100 text-red-700";}
+                else if (ghs.includes("ไวไฟ")) {ghsColor = "bg-orange-100 text-orange-700";}
+                else if (ghs.includes("พิษ")) {ghsColor = "bg-purple-100 text-purple-700";}
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50/80 transition duration-150";
@@ -162,6 +167,7 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
                     <td class="p-4 pl-6 font-mono font-bold text-teal-700">${item["code"] || '-'}</td>
                     <td class="p-4 font-semibold text-slate-900 text-sm">${item["ชื่อสารเคมี (Chemical name)"] || '-'}</td>
                     <td class="p-4 text-slate-500 font-mono text-xs">${item["CAS no."] || '-'}</td>
+                    <td class="p-4 text-xs"><span class="${ghsColor} px-2 py-0.5 rounded font-semibold">${ghs}</span></td>
                     <td class="p-4 text-xs"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${item["Grade"] || '-'}</span></td>
                     <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'} ${item["หน่วยขนาดบรรจุของขวด"] || ''}</td>
                     <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี (location)"] || '-'}</td>
