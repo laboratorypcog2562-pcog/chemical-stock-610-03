@@ -81,7 +81,7 @@
                     </thead>
                     <tbody id="stockTableBody" class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
                         <tr>
-                            <td colspan="9" class="p-16 text-center text-slate-400">
+                            <td colspan="10" class="p-16 text-center text-slate-400">
                                 <span class="inline-block animate-spin mr-3 text-teal-600 text-xl">⏳</span> 
                                 กำลังสืบค้นสถานะปัจจุบันของคลังเคมีภัณฑ์ กรุณารอสักครู่...
                             </td>
@@ -118,7 +118,7 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
             } catch (error) {
                 document.getElementById('stockTableBody').innerHTML = `
                     <tr>
-                        <td colspan="9" class="p-16 text-center text-rose-500 font-semibold">
+                        <td colspan="10" class="p-16 text-center text-rose-500 font-semibold">
                             ❌ ล้มเหลวในการเชื่อมประสาน API คอนเทนต์ กรุณาเช็กการตั้งสิทธิ์ Deploy ในกูเกิ้ลชีทให้เป็น 'Anyone'
                         </td>
                     </tr>`;
@@ -160,6 +160,23 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
                 if (ghs.includes("กัดกร่อน")) {ghsColor = "bg-red-100 text-red-700";}
                 else if (ghs.includes("ไวไฟ")) {ghsColor = "bg-orange-100 text-orange-700";}
                 else if (ghs.includes("พิษ")) {ghsColor = "bg-purple-100 text-purple-700";}
+
+                let expDate = item["วันหมดอายุ"] || '-';
+
+                if(expDate && expDate !== '-') {
+                const dateObj = new Date(expDate);
+
+                if(!isNaN(dateObj)) {
+                expDate = dateObj.toLocaleDateString(
+               'th-TH',
+                {
+                year:'numeric',
+                month:'short',
+                day:'numeric'
+                }
+            );
+        }
+    }
 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50/80 transition duration-150";
