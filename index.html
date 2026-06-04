@@ -147,35 +147,34 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
 
             data.forEach(item => {
                 const qty = Number(item["ปริมาณสารเคมีคงเหลือ"]) || 0;
-                // ===== GHS Image =====
+                // ===== GHS Images =====
                 const ghs = item["ประเภทความเป็นอันตราย (GHS)"] || "";
-
-                let ghsImage = "";
-
-                if (ghs.includes("สารไวไฟ")) {
-                    ghsImage = "images/flammable.png";
-                }
-                else if (ghs.includes("สารกัดกร่อน")) {
-                    ghsImage = "images/corrosive.png";
-                }
-                else if (ghs.includes("สารออกซิไดซ์")) {
-                    ghsImage = "images/oxidizer.png";
-                }
-                else if (ghs.includes("สารมีพิษเฉียบพลัน")) {
-                    ghsImage = "images/toxic.png";
-                }
-                else if (ghs.includes("สารอันตรายต่อสุขภาพ")) {
-                    ghsImage = "images/healthhazard.png";
-                }
-                else if (ghs.includes("สารอันตรายต่อสิ่งแวดล้อม")) {
-                    ghsImage = "images/environment.png";
-                }
-                else if (ghs.includes("ก๊าซบรรจุภายใต้ความดัน")) {
-                    ghsImage = "images/gas.png";
-                }
-                else if (ghs.includes("สารต้องระวัง")) {
-                    ghsImage = "images/warning.png";
-                }
+                
+                const ghsMap = {
+                    "สารไวไฟ": "images/flammable.png",
+                    "สารกัดกร่อน": "images/corrosive.png",
+                    "สารออกซิไดซ์": "images/oxidizer.png",
+                    "สารมีพิษเฉียบพลัน": "images/toxic.png",
+                    "สารอันตรายต่อสุขภาพ": "images/healthhazard.png",
+                    "สารอันตรายต่อสิ่งแวดล้อม": "images/environment.png",
+                    "ก๊าซบรรจุภายใต้ความดัน": "images/gas.png",
+                    "สารต้องระวัง": "images/warning.png"
+                };
+                
+                let ghsImages = "";
+                
+                Object.keys(ghsMap).forEach(type => {
+                    if (ghs.includes(type)) {
+                        ghsImages += `
+                            <img
+                                src="${ghsMap[type]}"
+                                alt="${type}"
+                                title="${type}"
+                                class="h-10 w-10 inline-block mx-1 rounded hover:scale-110 transition duration-200 cursor-help"
+                            >
+                        `;
+                    }
+                });
 
                 const statusBadge = qty > 0
                     ? `<span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60">พร้อมใช้งาน</span>`
@@ -213,7 +212,7 @@ Faculty of Pharmaceutical Sciences, Prince of Songkla University (PSU)
                     <td class="p-4 pl-6 font-mono font-bold text-teal-700">${item["code"] || '-'}</td>
                     <td class="p-4 font-semibold text-slate-900 text-sm">${item["ชื่อสารเคมี (Chemical name)"] || '-'}</td>
                     <td class="p-4 text-slate-500 font-mono text-xs">${item["CAS no."] || '-'}</td>
-                    <td class="p-4 text-center">${ghsImage? `<img src="${ghsImage}" alt="${ghs}" class="h-10 w-10 mx-auto" title="${ghs}">`: '-'}</td>
+                    <td class="p-4 text-center"><div class="flex flex-wrap justify-center gap-1">${ghsImages || '-'}</div></td>
                     <td class="p-4 text-xs"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${item["Grade"] || '-'}</span></td>
                     <td class="p-4 text-slate-600 text-xs">${item["ขนาดบรรจุของขวด"] || '-'} ${item["หน่วยขนาดบรรจุของขวด"] || ''}</td>
                     <td class="p-4 text-slate-500 text-xs">${item["ที่จัดเก็บสารเคมี (location)"] || '-'}</td>
